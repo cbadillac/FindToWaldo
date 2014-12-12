@@ -2,6 +2,8 @@
 #define WALDOGUI_H
 
 #include <QMainWindow>
+#include <opencv/cv.h>
+#include <opencv/highgui.h>
 
 namespace Ui {
 class WaldoGUI;
@@ -17,6 +19,13 @@ public:
 
 private:
     Ui::WaldoGUI *ui;
+
+public slots:
+    void on_pushButton_clicked();
+    void on_pushButton_2_clicked();
+signals:
+    void imagen_lista();
+    void imagen_lista_2();
 };
 
 #endif // WALDOGUI_H

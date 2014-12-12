@@ -13,10 +13,12 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        waldogui.cpp
+        waldogui.cpp \
+    mat2qimage.cpp
 
 LIBS += `pkg-config --cflags --libs opencv`
 
-HEADERS  += waldogui.h
+HEADERS  += waldogui.h \
+    mat2qimage.h
 
 FORMS    += waldogui.ui
