@@ -15,6 +15,8 @@ TEMPLATE = app
 SOURCES += main.cpp\
         waldogui.cpp
 
+LIBS += `pkg-config --cflags --libs opencv`
+
 HEADERS  += waldogui.h
 
 FORMS    += waldogui.ui
