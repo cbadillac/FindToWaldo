@@ -11,14 +11,16 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = untitled
 TEMPLATE = app
 
+CONFIG += qt
 
 SOURCES += main.cpp\
         waldogui.cpp \
-    mat2qimage.cpp
+    filtrosgui.cpp
 
 LIBS += `pkg-config --cflags --libs opencv`
 
 HEADERS  += waldogui.h \
-    mat2qimage.h
+    filtrosgui.h
 
-FORMS    += waldogui.ui
+FORMS    += waldogui.ui \
+    filtrosgui.ui

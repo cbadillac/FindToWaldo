@@ -1,8 +1,12 @@
 #include "mat2qimage.h"
+#include <opencv/cv.h>
+#include <opencv/highgui.h>
 
 Mat2QImage::Mat2QImage()
 {
 }
+
+using namespace cv;
 
 static QImage Mat2QImage::MatToQImage(const Mat& mat)
 {
