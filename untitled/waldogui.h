@@ -25,10 +25,10 @@ class WaldoGUI : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit WaldoGUI(QWidget *parent = 0);
+    explicit WaldoGUI(FiltrosGUI*winFiltros , QWidget *parent = 0 );
     ~WaldoGUI();
     cv::Mat getWaldoImage();
-    void setFiltrosWindow(FiltrosGUI* win);
+
 
 private:
     Ui::WaldoGUI *ui;
@@ -45,13 +45,14 @@ public slots:
     void on_pushButton_2_clicked();
     void on_actionVerFiltros_triggered();
     void cargarImagenOriginal();
-    void cargarImagenProcesada();
+    void cargarImagenProcesada(Mat &img);
 
 signals:
     void texto_listo(QString);
     void imagen_lista();
     void imagen_lista_2();
     void charge_Filters();
+    void imagenFinalLista(Mat&);
 
 
 };

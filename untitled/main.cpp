@@ -7,9 +7,9 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    WaldoGUI w;
+
     FiltrosGUI filterWindow;
-    w.setFiltrosWindow(&filterWindow);
+    WaldoGUI w(&filterWindow);
     //filterWindow.show();
     w.show();
 

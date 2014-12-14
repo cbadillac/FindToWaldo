@@ -3,19 +3,19 @@
 #include <string>
 #include <QLabel>
 
-WaldoGUI::WaldoGUI(QWidget *parent) :
+
+
+WaldoGUI::WaldoGUI(FiltrosGUI* winFiltros, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::WaldoGUI)
 {
     ui->setupUi(this);
     QObject::connect(this, SIGNAL(imagen_lista()), this, SLOT(cargarImagenOriginal()));
-
+    //TODO
+    //QObject::connect(SENDER, SIGNAL(this->imagenFinalLista(Mat&)), this, SLOT(this->cargarImagenProcesada(Mat&)))
+    filWind = winFiltros;
 }
 
-void WaldoGUI::setFiltrosWindow(FiltrosGUI* win)
-{
-    filWind = win;
-}
 
 WaldoGUI::~WaldoGUI()
 {
@@ -24,20 +24,20 @@ WaldoGUI::~WaldoGUI()
 
 void WaldoGUI::on_pushButton_clicked()
 {
-   QString fileName = QFileDialog::getOpenFileName(this, tr("Abrir Imagen"), "./",
-        tr("Imagen (*.png *.jpg *.jpeg *.bmp *.ppm);; All files (*.*)"));
-   if(fileName == "") return;
-   emit texto_listo(fileName);
-   Mat waldoImage = imread(fileName.toStdString());
-   //cvtColor(waldoImage, waldoImage, CV_BGR2YCrCb);
-   viewImage = MatToQImage(waldoImage);
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Abrir Imagen"), "./",
+                                                    tr("Imagen (*.png *.jpg *.jpeg *.bmp *.ppm);; All files (*.*)"));
+    if(fileName == "") return;
+    emit texto_listo(fileName);
+    Mat waldoImage = imread(fileName.toStdString());
+    //cvtColor(waldoImage, waldoImage, CV_BGR2YCrCb);
+    viewImage = MatToQImage(waldoImage);
 
-         if(viewImage.isNull()) {
-         QMessageBox::information(this, tr("Error de carga!!"), tr("No se puede cargar %1. ").arg(fileName));
+    if(viewImage.isNull()) {
+        QMessageBox::information(this, tr("Error de carga!!"), tr("No se puede cargar %1. ").arg(fileName));
 
-         return;
-         }
-         emit imagen_lista();
+        return;
+    }
+    emit imagen_lista();
 }
 
 void WaldoGUI::on_pushButton_2_clicked()
@@ -46,9 +46,8 @@ void WaldoGUI::on_pushButton_2_clicked()
     waldoImage = cvQueryFrame(cap);
     viewImage = MatToQImage(waldoImage);
     if(viewImage.isNull()) {
-    QMessageBox::information(this, tr("Error de carga!!"), tr("No se puede cargar webcam"));
-
-    return;
+        QMessageBox::information(this, tr("Error de carga!!"), tr("No se puede cargar webcam"));
+        return;
     }
     cvReleaseCapture(&cap);
     emit imagen_lista();
@@ -66,11 +65,11 @@ void WaldoGUI::cargarImagenOriginal()
     ui->scrollArea->setWidget(vistaImagenLista);
 }
 
-void WaldoGUI::cargarImagenProcesada()
+void WaldoGUI::cargarImagenProcesada(Mat& img)
 {
-    //TODO
-    //QLabel* vistaImagenProcesada = new QLabel();
-    //vistaImagenProcesada->setPixmap(QPixmap::fromImage());
+    QImage imagenListaTransf = this->MatToQImage(img);
+    QLabel* vistaImagenProcesada = new QLabel();
+    vistaImagenProcesada->setPixmap(QPixmap::fromImage(imagenListaTransf, Qt::AutoColor));
 }
 
 QImage WaldoGUI::MatToQImage(const Mat& mat)

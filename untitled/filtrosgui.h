@@ -2,10 +2,18 @@
 #define FILTROSGUI_H
 
 #include <QMainWindow>
+#include <opencv/cv.h>
+#include <opencv/highgui.h>
+#include <QMessageBox>
+#include <QImage>
+#include <QDebug>
 
 namespace Ui {
 class FiltrosGUI;
 }
+
+using namespace cv;
+using namespace std;
 
 class FiltrosGUI : public QMainWindow
 {
@@ -17,6 +25,17 @@ public:
 
 private:
     Ui::FiltrosGUI *ui;
+    QImage MatToQImage(const Mat& mat);
+public slots:
+    void mostrarFiltroUno(Mat&);
+    void mostrarFiltroDos(Mat&);
+    void mostrarFiltroTres(Mat&);
+
+signals:
+    void filtroUnoListo(Mat&);
+    void filtroDosListo(Mat&);
+    void filtroTresListo(Mat&);
+
 };
 
 #endif // FILTROSGUI_H
