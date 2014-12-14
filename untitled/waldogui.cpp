@@ -2,6 +2,7 @@
 #include "ui_waldogui.h"
 #include <string>
 #include <QLabel>
+#include "asmOpenCV.h"
 
 
 
@@ -25,11 +26,12 @@ WaldoGUI::~WaldoGUI()
 void WaldoGUI::on_pushButton_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Abrir Imagen"), "./",
-                                                    tr("Imagen (*.png *.jpg *.jpeg *.bmp *.ppm);; All files (*.*)"));
+                                                    tr("Imagen (*.png);; All files (*.*)"));
     if(fileName == "") return;
     emit texto_listo(fileName);
+
     Mat waldoImage = imread(fileName.toStdString());
-    //cvtColor(waldoImage, waldoImage, CV_BGR2YCrCb);
+
     viewImage = MatToQImage(waldoImage);
 
     if(viewImage.isNull()) {

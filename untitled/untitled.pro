@@ -20,7 +20,8 @@ SOURCES += main.cpp\
 LIBS += `pkg-config --cflags --libs opencv`
 
 HEADERS  += waldogui.h \
-    filtrosgui.h
+    filtrosgui.h \
+    asmOpenCV.h
 
 FORMS    += waldogui.ui \
     filtrosgui.ui
