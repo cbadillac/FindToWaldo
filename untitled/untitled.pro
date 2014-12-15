@@ -25,7 +25,8 @@ HEADERS  += waldogui.h \
     filtrosgui.h \
     asmOpenCV.h \
     franjas.h \
-    templatematching.h
+    templatematching.h \
+    temp_histogram.hpp
 
 FORMS    += waldogui.ui \
     filtrosgui.ui \

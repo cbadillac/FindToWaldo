@@ -7,96 +7,7 @@
 using namespace std;
 using namespace cv;
 
-/*
-template< std::size_t N >
-void surfCube(Mat source, Mat templates[N], int nscale=1)
-{
-    if(nscale<1){
-        cout << "No se puede ingresar un valor de escalamiento menor a 1.\n";
-        return;
-    }
 
-    ///Loop for matches in the source image
-    Mat subArea;
-    int temp_width;
-    int temp_height;
-    double actual_comparation;
-
-    //vector of keypoints
-    vector< cv::KeyPoint > keypointsO[N]; //keypoints for object
-    vector< cv::KeyPoint > keypointsS; //keypoints for scene
-
-    SurfFeatureDetector surf(1500);
-    for(int i=0;i<N;i++)
-        surf.detect(templates[i],keypointsO);
-
-    //Descriptor matrices
-    Mat descriptors_templ[N], descriptors_source;
-
-    SurfDescriptorExtractor extractor;
-    for(int i=0;i<N;i++)
-        extractor.compute( templates[i], keypointsO, descriptors_templ[i] );
-
-    //Declering flann based matcher
-    FlannBasedMatcher matcher;
-    vector< vector< DMatch > > matches;
-    vector< DMatch > good_matches;
-
-    for(int ntemps=0; ntemps<N; ntemps++){
-        temp_width  = templates[ntemps].cols;
-        temp_height = templates[ntemps].rows;
-
-        for(int it=1;it<=nscale;it++){
-            for(int wi=0; wi<(source.cols); wi++){
-                for(int hi=0; hi<(source.rows); hi++){
-                    subArea = source(Rect(wi, hi, temp_width/it, temp_height/it));
-
-                    surf.detect(subArea,keypointsS);
-                    extractor.compute( subArea, keypointsS, descriptors_source );
-
-                    matcher.knnMatch( descriptors_templ[ntemps], descriptors_source, matches, 2 );
-
-                    good_matches.reserve(matches.size());
-
-                    for (size_t i = 0; i < matches.size(); ++i)
-                    {
-                        if (matches[i].size() < 2)
-                                    continue;
-
-                        const DMatch &m1 = matches[i][0];
-                        const DMatch &m2 = matches[i][1];
-
-                        if(m1.distance <= 1 * m2.distance) // nndrRatio
-                            good_matches.push_back(m1);
-                    }
-
-                    std::vector< Point2f >  obj;
-                    std::vector< Point2f >  scene;
-
-                    for( unsigned int i = 0; i < good_matches.size(); i++ )
-                    {
-                        //-- Get the keypoints from the good matches
-                        obj.push_back( keypointsO[ good_matches[i].queryIdx ].pt );
-                        scene.push_back( keypointsS[ good_matches[i].trainIdx ].pt );
-                    }
-
-                    Mat H = findHomography( obj, scene, CV_RANSAC );
-
-                    //-- Get the corners from the object to be "detected"
-                    std::vector< Point2f > obj_corners[4];
-                    obj_corners[0] = cvPoint(0,0);
-                    obj_corners[1] = cvPoint( objectP.cols, 0 );
-                    obj_corners[2] = cvPoint( objectP.cols, objectP.rows );
-                    obj_corners[3] = cvPoint( 0, objectP.rows );
-                    std::vector< Point2f > scene_corners(4);
-
-                    perspectiveTransform( obj_corners, scene_corners, H);
-                }
-            }
-        }
-    }
-}
-*/
 void printHistogram(Mat image)
 {
     /// Separate the image in 3 places ( B, G and R )
@@ -343,6 +254,7 @@ void HistogramModule(Mat sources[N])
     waitKey(0);
 }
 
+/** Example *****************************************************************
 int main()
 {
     Mat sources[1] = {imread("whereiswaldo3.jpeg", CV_LOAD_IMAGE_COLOR)};
@@ -352,4 +264,96 @@ int main()
 
     return 0;
 }
+******************************************************************************/
 
+
+/*
+template< std::size_t N >
+void surfCube(Mat source, Mat templates[N], int nscale=1)
+{
+    if(nscale<1){
+        cout << "No se puede ingresar un valor de escalamiento menor a 1.\n";
+        return;
+    }
+
+    ///Loop for matches in the source image
+    Mat subArea;
+    int temp_width;
+    int temp_height;
+    double actual_comparation;
+
+    //vector of keypoints
+    vector< cv::KeyPoint > keypointsO[N]; //keypoints for object
+    vector< cv::KeyPoint > keypointsS; //keypoints for scene
+
+    SurfFeatureDetector surf(1500);
+    for(int i=0;i<N;i++)
+        surf.detect(templates[i],keypointsO);
+
+    //Descriptor matrices
+    Mat descriptors_templ[N], descriptors_source;
+
+    SurfDescriptorExtractor extractor;
+    for(int i=0;i<N;i++)
+        extractor.compute( templates[i], keypointsO, descriptors_templ[i] );
+
+    //Declering flann based matcher
+    FlannBasedMatcher matcher;
+    vector< vector< DMatch > > matches;
+    vector< DMatch > good_matches;
+
+    for(int ntemps=0; ntemps<N; ntemps++){
+        temp_width  = templates[ntemps].cols;
+        temp_height = templates[ntemps].rows;
+
+        for(int it=1;it<=nscale;it++){
+            for(int wi=0; wi<(source.cols); wi++){
+                for(int hi=0; hi<(source.rows); hi++){
+                    subArea = source(Rect(wi, hi, temp_width/it, temp_height/it));
+
+                    surf.detect(subArea,keypointsS);
+                    extractor.compute( subArea, keypointsS, descriptors_source );
+
+                    matcher.knnMatch( descriptors_templ[ntemps], descriptors_source, matches, 2 );
+
+                    good_matches.reserve(matches.size());
+
+                    for (size_t i = 0; i < matches.size(); ++i)
+                    {
+                        if (matches[i].size() < 2)
+                                    continue;
+
+                        const DMatch &m1 = matches[i][0];
+                        const DMatch &m2 = matches[i][1];
+
+                        if(m1.distance <= 1 * m2.distance) // nndrRatio
+                            good_matches.push_back(m1);
+                    }
+
+                    std::vector< Point2f >  obj;
+                    std::vector< Point2f >  scene;
+
+                    for( unsigned int i = 0; i < good_matches.size(); i++ )
+                    {
+                        //-- Get the keypoints from the good matches
+                        obj.push_back( keypointsO[ good_matches[i].queryIdx ].pt );
+                        scene.push_back( keypointsS[ good_matches[i].trainIdx ].pt );
+                    }
+
+                    Mat H = findHomography( obj, scene, CV_RANSAC );
+
+                    //-- Get the corners from the object to be "detected"
+                    std::vector< Point2f > obj_corners[4];
+                    obj_corners[0] = cvPoint(0,0);
+                    obj_corners[1] = cvPoint( objectP.cols, 0 );
+                    obj_corners[2] = cvPoint( objectP.cols, objectP.rows );
+                    obj_corners[3] = cvPoint( 0, objectP.rows );
+                    std::vector< Point2f > scene_corners(4);
+
+                    perspectiveTransform( obj_corners, scene_corners, H);
+                }
+            }
+        }
+    }
+}
+*/
