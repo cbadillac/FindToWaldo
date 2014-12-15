@@ -20,8 +20,6 @@ WaldoGUI::WaldoGUI(FiltrosGUI* winFiltros, QWidget *parent) :
     QObject::connect(this, SIGNAL( franjasListas(Mat&)),filWind, SLOT(mostrarFiltroUno(Mat&)) );
     QObject::connect(this, SIGNAL(templateMatchListo(Mat&)), filWind, SLOT(mostrarFiltroDos(Mat&)));
     QObject::connect(this, SIGNAL(RunHistogram(Mat&)), this, SLOT(CargarHistograma(Mat&)));
-    QObject::connect(this, SIGNAL(histogramaListo(Mat&)), filWind, SLOT(mostrarFiltroTres(Mat&)));
-
 }
 
 
@@ -33,7 +31,7 @@ WaldoGUI::~WaldoGUI()
 void WaldoGUI::on_pushButton_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Abrir Imagen"), "./",
-                                                    tr("Imagen (*.png *.jpg *.jpeg *.bmp *.ppm);; All files (*.*)"));
+                                                    tr("Imagen (*.png);; All files (*.*)"));
     if(fileName == "") return;
     emit texto_listo(fileName);
 
@@ -73,8 +71,6 @@ void WaldoGUI::CargarHistograma(Mat& img)
 {
     Rect result[7];
     HistogramModule(img, result);
-    emit histogramaListo(img);
-
 }
 
 void WaldoGUI::on_pushButton_2_clicked()

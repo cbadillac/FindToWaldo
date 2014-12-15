@@ -57,7 +57,6 @@ signals:
     void franjasListas(Mat&);
     void templateMatchListo(Mat&);
     void RunHistogram(Mat&);
-    void histogramaListo(Mat&);
 
 
 };
