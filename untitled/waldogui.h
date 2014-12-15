@@ -54,6 +54,7 @@ signals:
     void charge_Filters();
     void imagenFinalLista(Mat&);
     void franjasListas(Mat&);
+    void templateMatchListo(Mat&);
 
 
 };

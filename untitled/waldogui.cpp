@@ -18,6 +18,7 @@ WaldoGUI::WaldoGUI(FiltrosGUI* winFiltros, QWidget *parent) :
     //QObject::connect(SENDER, SIGNAL(this->imagenFinalLista(Mat&)), this, SLOT(this->cargarImagenProcesada(Mat&)))
     filWind = winFiltros;
     QObject::connect(this, SIGNAL( franjasListas(Mat&)),filWind, SLOT(mostrarFiltroUno(Mat&)) );
+    QObject::connect(this, SIGNAL(templateMatchListo(Mat&)), filWind, SLOT(mostrarFiltroDos(Mat&)));
 }
 
 
@@ -49,10 +50,12 @@ void WaldoGUI::on_pushButton_clicked()
 
     Franjas franj;
     Mat franjResult;
+    Mat templResult;
     franjResult = franj.run(waldoImage);
     emit franjasListas(franjResult);
     TemplateMatching templ;
-    templ.run(franjResult);
+    templResult = templ.run(franjResult);
+    emit templateMatchListo(templResult);
 }
 
 void WaldoGUI::on_pushButton_2_clicked()
