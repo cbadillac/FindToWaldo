@@ -195,7 +195,7 @@ Mat combine_binary(Mat src,Mat bin1){
 }
 
 
-void HistogramModule(Mat& sources)
+void HistogramModule(Mat& sources, Rect )
 {
     const int NTEMPS = 7;
 
@@ -212,7 +212,7 @@ void HistogramModule(Mat& sources)
 
     /* Error handling */
 
-    if(! sources[0].data )
+    if(! sources.data )
     {
         cout <<  "Could not open or find the image where is waldo" << std::endl ;
         return;
@@ -229,13 +229,13 @@ void HistogramModule(Mat& sources)
 
     /* Back Projection */
 
-    double results[NTEMPS] = {1,1,1,1,1,1,1,1};
+    double results[NTEMPS] = {1,1,1,1,1,1,1};
     Rect result_rects[NTEMPS];
 
     //Mat buffer[NTEMPS];
-    bestMatches<NTEMPS>(sources[0], templates, resultsMatch);
+    bestMatches<NTEMPS>(sources, templates, resultsMatch);
     for(int i=0;i<NTEMPS;i++){
-        resultsMatch[i] = combine_binary(sources[0], resultsMatch[i]);
+        resultsMatch[i] = combine_binary(sources, resultsMatch[i]);
         //imshow( "Where is Waldo? Found!"+i, resultsMatch[i]);
     }
     //waitKey(0);
@@ -247,11 +247,11 @@ void HistogramModule(Mat& sources)
 
     for(int i=0; i<NTEMPS; i++){
         cout << " Correlation "<< ((i+1)*255/NTEMPS) << ": " <<  results[i] << "\n";
-        rectangle(sources[0], result_rects[i], (i+1)*255/NTEMPS, 2);
+        //rectangle(sources, result_rects[i], (i+1)*255/NTEMPS, 2);
     }
 
-    imshow( "Where is Waldo? Found!", sources[0]);
-    waitKey(0);
+    //imshow( "Where is Waldo? Found!", sources);
+    //waitKey(0);
 
 }
 
