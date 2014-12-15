@@ -3,6 +3,7 @@
 #include <string>
 #include <QLabel>
 #include "asmOpenCV.h"
+#include "franjas.h"
 
 
 
@@ -40,6 +41,9 @@ void WaldoGUI::on_pushButton_clicked()
         return;
     }
     emit imagen_lista();
+
+    Franjas franj;
+    franj.run(waldoImage);
 }
 
 void WaldoGUI::on_pushButton_2_clicked()
