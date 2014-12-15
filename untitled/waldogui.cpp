@@ -55,20 +55,22 @@ void WaldoGUI::on_pushButton_clicked()
 
     franjResult = franj.run(waldoImage);
     emit franjasListas(franjResult);
+
     emit RunHistogram(franjResult);
 
-    /*
+
     TemplateMatching templ;
     templResult = templ.run(franjResult);
     emit templateMatchListo(templResult);
-    */
+
 
     //HistogramModule<1>(&franjResult);
 }
 
 void WaldoGUI::CargarHistograma(Mat& img)
 {
-    HistogramModule(img);
+    Rect result[7];
+    HistogramModule(img, result);
 }
 
 void WaldoGUI::on_pushButton_2_clicked()

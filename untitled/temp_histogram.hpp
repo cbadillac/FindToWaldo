@@ -202,13 +202,13 @@ void HistogramModule(Mat& sources, Rect result_rects[7])
     Mat templates[NTEMPS];
     Mat resultsMatch[NTEMPS];
 
-    templates[0] = imread("temp8.jpeg", CV_LOAD_IMAGE_COLOR);
-    templates[1] = imread("temp10.jpeg", CV_LOAD_IMAGE_COLOR);
-    templates[2] = imread("temp11.jpeg", CV_LOAD_IMAGE_COLOR);
-    templates[3] = imread("temp1.jpeg", CV_LOAD_IMAGE_COLOR);
-    templates[4] = imread("temp9.jpeg", CV_LOAD_IMAGE_COLOR);
-    templates[5] = imread("temp3.jpeg", CV_LOAD_IMAGE_COLOR);
-    templates[6] = imread("temp6.jpeg", CV_LOAD_IMAGE_COLOR);
+    templates[0] = imread("temp_histograms/temp8.jpeg", CV_LOAD_IMAGE_COLOR);
+    templates[1] = imread("temp_histograms/temp10.jpeg", CV_LOAD_IMAGE_COLOR);
+    templates[2] = imread("temp_histograms/temp11.jpeg", CV_LOAD_IMAGE_COLOR);
+    templates[3] = imread("temp_histograms/temp1.jpeg", CV_LOAD_IMAGE_COLOR);
+    templates[4] = imread("temp_histograms/temp9.jpeg", CV_LOAD_IMAGE_COLOR);
+    templates[5] = imread("temp_histograms/temp3.jpeg", CV_LOAD_IMAGE_COLOR);
+    templates[6] = imread("temp_histograms/temp6.jpeg", CV_LOAD_IMAGE_COLOR);
 
     /* Error handling */
 
@@ -246,10 +246,10 @@ void HistogramModule(Mat& sources, Rect result_rects[7])
 
     for(int i=0; i<NTEMPS; i++){
         cout << " Correlation "<< ((i+1)*255/NTEMPS) << ": " <<  results[i] << "\n";
-        //rectangle(sources, result_rects[i], (i+1)*255/NTEMPS, 2);
+        rectangle(sources, result_rects[i], (i+1)*255/NTEMPS, 2);
     }
 
-    //imshow( "Where is Waldo? Found!", sources);
+    imshow( "Where is Waldo? Found!", sources);
     //waitKey(0);
 
 }

@@ -13,8 +13,12 @@ TemplateMatching::~TemplateMatching()
     delete ui;
 }
 
-Mat TemplateMatching::run(Mat & img)
+Mat TemplateMatching::run(Mat & src)
 {
+
+    Mat img = src;
+
+
 
     // Source image to display
     Mat img_display;
@@ -28,28 +32,26 @@ Mat TemplateMatching::run(Mat & img)
     double MAX = 0; Point MAXLoc; int num;
 
     //cargar templates
-    templ[0][0] = imread("template/template11.jpg");
-    templ[0][1] = imread("template/template12.jpg");
-    templ[0][2] = imread("template/template13.jpg");
-    templ[0][3] = imread("template/template14.jpg");
-    templ[1][0] = imread("template/template21.jpg");
-    templ[1][1] = imread("template/template22.jpg");
-    templ[1][2] = imread("template/template23.jpg");
-    templ[1][3] = imread("template/template24.jpg");
-    templ[2][0] = imread("template/template31.jpg");
-    templ[2][1] = imread("template/template32.jpg");
-    templ[2][2] = imread("template/template33.jpg");
-    templ[2][3] = imread("template/template34.jpg");
-    templ[3][0] = imread("template/template41.jpg");
-    templ[3][1] = imread("template/template42.jpg");
-    templ[3][2] = imread("template/template43.jpg");
-    templ[3][3] = imread("template/template44.jpg");
-    templ[4][0] = imread("template/template51.jpg");
-    templ[4][1] = imread("template/template52.jpg");
-    templ[4][2] = imread("template/template53.jpg");
-    templ[4][3] = imread("template/template54.jpg");
-
-
+    templ[0][0] = imread("Template/template/template11.jpg");
+    templ[0][1] = imread("Template/template/template12.jpg");
+    templ[0][2] = imread("Template/template/template13.jpg");
+    templ[0][3] = imread("Template/template/template14.jpg");
+    templ[1][0] = imread("Template/template/template21.jpg");
+    templ[1][1] = imread("Template/template/template22.jpg");
+    templ[1][2] = imread("Template/template/template23.jpg");
+    templ[1][3] = imread("Template/template/template24.jpg");
+    templ[2][0] = imread("Template/template/template31.jpg");
+    templ[2][1] = imread("Template/template/template32.jpg");
+    templ[2][2] = imread("Template/template/template33.jpg");
+    templ[2][3] = imread("Template/template/template34.jpg");
+    templ[3][0] = imread("Template/template/template41.jpg");
+    templ[3][1] = imread("Template/template/template42.jpg");
+    templ[3][2] = imread("Template/template/template43.jpg");
+    templ[3][3] = imread("Template/template/template44.jpg");
+    templ[4][0] = imread("Template/template/template51.jpg");
+    templ[4][1] = imread("Template/template/template52.jpg");
+    templ[4][2] = imread("Template/template/template53.jpg");
+    templ[4][3] = imread("Template/template/template54.jpg");
 
     //FOR tamaños templates
     for (int i=0;i<5;i++)
@@ -94,7 +96,7 @@ Mat TemplateMatching::run(Mat & img)
                    Point( maxLoc.x+10 + templ[i][num].cols , maxLoc.y + templ[i][num].rows+10 ),
                    Scalar::all(0), 2, 8, 0 );
         rectangle( result[i], maxLoc, Point( maxLoc.x + templ[i][num].cols ,
-                                             maxLoc.y + templ[i][num].rows ), Scalar::all(0), 2, 8, 0 );
+                                             maxLoc.y + templ[i][num].rows ), Scalar::all(0), 2, 150, 0 );
 
         //termina FOR tamaños
 
