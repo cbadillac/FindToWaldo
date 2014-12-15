@@ -106,6 +106,9 @@ void matchWaldo(Mat& source, Mat templates[N], double results[N], Rect results_r
     int temp_height;
     double actual_comparation;
 
+    //for(int i=0;;i++)
+    //Mat hist_temp[4]= (hist_temp[0] + hist_temp[1] + hist_temp[2] + hist_temp[3])/4;
+
     for(int ntemps=0; ntemps<N; ntemps++){
         temp_width  = templates[ntemps].cols;
         temp_height = templates[ntemps].rows;
@@ -131,7 +134,7 @@ void matchWaldo(Mat& source, Mat templates[N], double results[N], Rect results_r
 
 Mat morph(const Mat& src){
     Mat dst;
-    Mat element = getStructuringElement( MORPH_ELLIPSE, Size(7, 7), Point( -1,1) );
+    Mat element = getStructuringElement( MORPH_ELLIPSE, Size(7, 10), Point( -1,1) );
     morphologyEx(src,dst,CV_MOP_DILATE, element,Point(-1,1), 1);
     return dst;
 }
@@ -193,23 +196,23 @@ Mat combine_binary(Mat src,Mat bin1){
     return dst;
 }
 
-template< size_t N >
-void HistogramModule(Mat sources[N])
+
+void HistogramModule(Mat& sources)
 {
-    const int NTEMPS = 5;
+    const int NTEMPS = 4;
 
     Mat templates[NTEMPS];
     Mat resultsMatch[NTEMPS];
 
     templates[0] = imread("../temp_histograms/temp8.jpeg", CV_LOAD_IMAGE_COLOR);
     templates[1] = imread("../temp_histograms/temp9.jpeg", CV_LOAD_IMAGE_COLOR);
-    templates[2] = imread("../temp_histograms/temp6.jpeg", CV_LOAD_IMAGE_COLOR);
-    templates[3] = imread("../temp_histograms/temp5.jpeg", CV_LOAD_IMAGE_COLOR);
-    templates[4] = imread("../temp_histograms/temp7.jpeg", CV_LOAD_IMAGE_COLOR);
+    templates[2] = imread("../temp_histograms/temp2.jpeg", CV_LOAD_IMAGE_COLOR);
+    templates[3] = imread("../temp_histograms/temp5.jpeg", CV_LOAD_IMAGE_COLOR);/*
+    templates[4] = imread("../temp_histograms/temp7.jpeg", CV_LOAD_IMAGE_COLOR);*/
 
     /* Error handling */
 
-    if(! sources[0].data )
+    if(! sources.data )
     {
         cout <<  "Could not open or find the image where is waldo" << std::endl ;
         return;
@@ -226,13 +229,13 @@ void HistogramModule(Mat sources[N])
 
     /* Back Projection */
 
-    double results[NTEMPS] = {1,1,1,1,1};  // Initial vector = {1,1,1,1}
+    double results[NTEMPS] = {1,1,1,1};  // Initial vector = {1,1,1,1}
     Rect result_rects[NTEMPS];
 
     //Mat buffer[NTEMPS];
-    bestMatches<NTEMPS>(sources[0], templates, resultsMatch);
+    bestMatches<NTEMPS>(sources, templates, resultsMatch);
     for(int i=0;i<NTEMPS;i++){
-        resultsMatch[i] = combine_binary(sources[0], resultsMatch[i]);
+        resultsMatch[i] = combine_binary(sources, resultsMatch[i]);
         //imshow( "Where is Waldo? Found!"+i, resultsMatch[i]);
     }
     //waitKey(0);
@@ -244,14 +247,15 @@ void HistogramModule(Mat sources[N])
     cout << " Correlation 1: " <<  results[0] << "\n";  //"(x,y): " << result_rects[0].x << " " << result_rects[0].y <<
     cout << " Correlation 2: " <<  results[1] << "\n";
     cout << " Correlation 3: " <<  results[2] << "\n";
-    cout << " Correlation 4: " <<  results[3] << "\n";
-    cout << " Correlation 5: " <<  results[4] << "\n";
+    cout << " Correlation 4: " <<  results[3] << "\n";/*
+    cout << " Correlation 5: " <<  results[4] << "\n";*/
 
     for(int i=0; i<NTEMPS; i++)
-        rectangle(sources[0], result_rects[i], i*255/NTEMPS, 2);
+        rectangle(sources, result_rects[i], i*255/NTEMPS, 2);
 
-    imshow( "Where is Waldo? Found!", sources[0]);
-    waitKey(0);
+    imshow( "Where is Waldo? Found!", sources);
+    /**/
+
 }
 
 /** Example *****************************************************************

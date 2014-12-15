@@ -46,6 +46,7 @@ public slots:
     void on_actionVerFiltros_triggered();
     void cargarImagenOriginal();
     void cargarImagenProcesada(Mat &img);
+    void CargarHistograma(Mat& img);
 
 signals:
     void texto_listo(QString);
@@ -55,6 +56,7 @@ signals:
     void imagenFinalLista(Mat&);
     void franjasListas(Mat&);
     void templateMatchListo(Mat&);
+    void RunHistogram(Mat&);
 
 
 };

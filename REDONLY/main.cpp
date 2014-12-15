@@ -6,7 +6,6 @@
 using namespace std;
 using namespace cv;
 
-Mat img; Mat templ[5][4]; Mat result[10];
 
 Mat redFilter(const Mat& src)
 {

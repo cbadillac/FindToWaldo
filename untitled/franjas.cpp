@@ -34,23 +34,17 @@ Mat Franjas::whiteFilter(const Mat& src)
 }
 
 Mat Franjas::morph(const Mat& src){
+    Mat dst;
+    int struct_width = src.cols*0.015;
+    int struct_heigth = src.rows*0.015;
 
-    Mat test  =src;
+    Mat element = getStructuringElement( MORPH_ELLIPSE, Size(struct_heigth, struct_width), Point( -1,1) );
 
+    morphologyEx(src,dst,CV_MOP_DILATE, element,Point(-1,1), 1);
+    morphologyEx(dst,dst,CV_MOP_DILATE, element,Point(-1,1), 1);
+    morphologyEx(dst,dst,CV_MOP_DILATE, element,Point(-1,1), 1);
 
-    Mat element = getStructuringElement( MORPH_ELLIPSE, Size(15, 15), Point( -1,1) );
-
-    Mat opening;
-//        morphologyEx(binary,opening, MORPH_OPEN, element);
-    morphologyEx(test,opening,CV_MOP_DILATE, element,Point(-1,1), 1);
-
-//    erode(test,opening,element,Point(-1,1),1);
-
-//    cv::blur(opening,test,Size(11,1));
-
-
-//    return test;
-    return opening;
+    return dst;
 }
 
 Mat Franjas::verticalBlur(const Mat& src){
@@ -98,12 +92,12 @@ Mat Franjas::run(Mat& input)
         Mat final2 = combine_binary(input,final);
       //  Mat final3 = morph(final2);
 
-        imshow("input", input);
-        imshow("redOnly", redOnly);
-        imshow("redBlur", redBlur);
-        imshow("whiteOnly", whiteOnly);
-        imshow("whiteBlur", whiteBlur);
-        imshow("final",final);
+        //imshow("input", input);
+        //imshow("redOnly", redOnly);
+        //imshow("redBlur", redBlur);
+        //imshow("whiteOnly", whiteOnly);
+        //imshow("whiteBlur", whiteBlur);
+        //imshow("final",final);
         imshow("final2",final2);
      //   imshow("final3",final3);
 

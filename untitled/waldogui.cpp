@@ -19,6 +19,7 @@ WaldoGUI::WaldoGUI(FiltrosGUI* winFiltros, QWidget *parent) :
     filWind = winFiltros;
     QObject::connect(this, SIGNAL( franjasListas(Mat&)),filWind, SLOT(mostrarFiltroUno(Mat&)) );
     QObject::connect(this, SIGNAL(templateMatchListo(Mat&)), filWind, SLOT(mostrarFiltroDos(Mat&)));
+    QObject::connect(this, SIGNAL(RunHistogram(Mat&)), this, SLOT(CargarHistograma(Mat&)));
 }
 
 
@@ -54,6 +55,7 @@ void WaldoGUI::on_pushButton_clicked()
 
     franjResult = franj.run(waldoImage);
     emit franjasListas(franjResult);
+    emit RunHistogram(franjResult);
 
     /*
     TemplateMatching templ;
@@ -61,7 +63,12 @@ void WaldoGUI::on_pushButton_clicked()
     emit templateMatchListo(templResult);
     */
 
-    HistogramModule<1>(&franjResult);
+    //HistogramModule<1>(&franjResult);
+}
+
+void WaldoGUI::CargarHistograma(Mat& img)
+{
+    HistogramModule(img);
 }
 
 void WaldoGUI::on_pushButton_2_clicked()
