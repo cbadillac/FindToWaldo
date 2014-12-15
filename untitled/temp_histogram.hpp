@@ -195,7 +195,7 @@ Mat combine_binary(Mat src,Mat bin1){
 }
 
 
-void HistogramModule(Mat& sources, Rect )
+void HistogramModule(Mat& sources, Rect result_rects[7])
 {
     const int NTEMPS = 7;
 
@@ -230,7 +230,6 @@ void HistogramModule(Mat& sources, Rect )
     /* Back Projection */
 
     double results[NTEMPS] = {1,1,1,1,1,1,1};
-    Rect result_rects[NTEMPS];
 
     //Mat buffer[NTEMPS];
     bestMatches<NTEMPS>(sources, templates, resultsMatch);
