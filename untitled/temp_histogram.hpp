@@ -201,11 +201,11 @@ void HistogramModule(Mat sources[N])
     Mat templates[NTEMPS];
     Mat resultsMatch[NTEMPS];
 
-    templates[0] = imread("temp8.jpeg", CV_LOAD_IMAGE_COLOR);
-    templates[1] = imread("temp9.jpeg", CV_LOAD_IMAGE_COLOR);
-    templates[2] = imread("temp6.jpeg", CV_LOAD_IMAGE_COLOR);
-    templates[3] = imread("temp5.jpeg", CV_LOAD_IMAGE_COLOR);
-    templates[4] = imread("temp7.jpeg", CV_LOAD_IMAGE_COLOR);
+    templates[0] = imread("../temp_histograms/temp8.jpeg", CV_LOAD_IMAGE_COLOR);
+    templates[1] = imread("../temp_histograms/temp9.jpeg", CV_LOAD_IMAGE_COLOR);
+    templates[2] = imread("../temp_histograms/temp6.jpeg", CV_LOAD_IMAGE_COLOR);
+    templates[3] = imread("../temp_histograms/temp5.jpeg", CV_LOAD_IMAGE_COLOR);
+    templates[4] = imread("../temp_histograms/temp7.jpeg", CV_LOAD_IMAGE_COLOR);
 
     /* Error handling */
 
