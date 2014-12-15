@@ -53,6 +53,7 @@ signals:
     void imagen_lista_2();
     void charge_Filters();
     void imagenFinalLista(Mat&);
+    void franjasListas(Mat&);
 
 
 };

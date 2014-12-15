@@ -4,6 +4,7 @@
 #include <QLabel>
 #include "asmOpenCV.h"
 #include "franjas.h"
+#include "templatematching.h"
 
 
 
@@ -16,6 +17,7 @@ WaldoGUI::WaldoGUI(FiltrosGUI* winFiltros, QWidget *parent) :
     //TODO
     //QObject::connect(SENDER, SIGNAL(this->imagenFinalLista(Mat&)), this, SLOT(this->cargarImagenProcesada(Mat&)))
     filWind = winFiltros;
+    QObject::connect(this, SIGNAL( franjasListas(Mat&)),filWind, SLOT(mostrarFiltroUno(Mat&)) );
 }
 
 
@@ -42,8 +44,15 @@ void WaldoGUI::on_pushButton_clicked()
     }
     emit imagen_lista();
 
+    //AGV Perdonanos porque no sabemos la que hacemos
+    //Aca se encuentra el main del codigo
+
     Franjas franj;
-    franj.run(waldoImage);
+    Mat franjResult;
+    franjResult = franj.run(waldoImage);
+    emit franjasListas(franjResult);
+    TemplateMatching templ;
+    templ.run(franjResult);
 }
 
 void WaldoGUI::on_pushButton_2_clicked()

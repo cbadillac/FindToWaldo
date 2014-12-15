@@ -16,15 +16,18 @@ CONFIG += qt
 SOURCES += main.cpp\
         waldogui.cpp \
     filtrosgui.cpp \
-    franjas.cpp
+    franjas.cpp \
+    templatematching.cpp
 
 LIBS += `pkg-config --cflags --libs opencv`
 
 HEADERS  += waldogui.h \
     filtrosgui.h \
     asmOpenCV.h \
-    franjas.h
+    franjas.h \
+    templatematching.h
 
 FORMS    += waldogui.ui \
     filtrosgui.ui \
-    franjas.ui
+    franjas.ui \
+    templatematching.ui
