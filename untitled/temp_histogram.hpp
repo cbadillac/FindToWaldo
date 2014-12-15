@@ -107,13 +107,14 @@ void matchWaldo(Mat& source, Mat templates[N], double results[N], Rect results_r
     double actual_comparation;
 
     for(int ntemps=0; ntemps<N; ntemps++){
-        temp_width  = 16;
-        temp_height = 22;
+        temp_width  = 16;   // Harcorito
+        temp_height = 22;   // Harcorito
 
         for(int it=1; it<=nscales; it++){
-            for(int wi=0; wi<(hsv_source.cols-temp_width-2*it); wi+=temp_width/3){
-                for(int hi=0; hi<(hsv_source.rows-temp_height-2*it); hi+=temp_height/3){
-                    subArea = hsv_source(Rect(wi,hi,temp_width-2*it, temp_height-2*it));
+            for(int wi=0; wi<(hsv_source.cols-(temp_width-2*it)); wi += temp_width/3){
+                for(int hi=0; hi<(hsv_source.rows-(temp_height-2*it)); hi += temp_height/3){
+
+                    subArea = hsv_source(Rect(wi,hi,(temp_width-2*it), (temp_height-2*it)));
                     calcHist( &subArea, 1, channels, Mat(), hist_subArea, 2, histSize, ranges, true, false );
                     normalize( hist_subArea, hist_subArea, 0, 255, NORM_MINMAX, -1, Mat() );
 
@@ -201,17 +202,17 @@ void HistogramModule(Mat& sources)
     Mat templates[NTEMPS];
     Mat resultsMatch[NTEMPS];
 
-    templates[0] = imread("../temp_histograms/temp8.jpeg", CV_LOAD_IMAGE_COLOR);
-    templates[1] = imread("../temp_histograms/temp1.jpeg", CV_LOAD_IMAGE_COLOR);
-    templates[2] = imread("../temp_histograms/temp2.jpeg", CV_LOAD_IMAGE_COLOR);
-    templates[3] = imread("../temp_histograms/temp5.jpeg", CV_LOAD_IMAGE_COLOR);
-    templates[4] = imread("../temp_histograms/temp7.jpeg", CV_LOAD_IMAGE_COLOR);
-    templates[5] = imread("../temp_histograms/temp11.jpeg", CV_LOAD_IMAGE_COLOR);
-    templates[6] = imread("../temp_histograms/temp10.jpeg", CV_LOAD_IMAGE_COLOR);
+    templates[0] = imread("temp8.jpeg", CV_LOAD_IMAGE_COLOR);
+    templates[1] = imread("temp10.jpeg", CV_LOAD_IMAGE_COLOR);
+    templates[2] = imread("temp11.jpeg", CV_LOAD_IMAGE_COLOR);
+    templates[3] = imread("temp1.jpeg", CV_LOAD_IMAGE_COLOR);
+    templates[4] = imread("temp9.jpeg", CV_LOAD_IMAGE_COLOR);
+    templates[5] = imread("temp3.jpeg", CV_LOAD_IMAGE_COLOR);
+    templates[6] = imread("temp6.jpeg", CV_LOAD_IMAGE_COLOR);
 
     /* Error handling */
 
-    if(! sources.data )
+    if(! sources[0].data )
     {
         cout <<  "Could not open or find the image where is waldo" << std::endl ;
         return;
@@ -228,33 +229,29 @@ void HistogramModule(Mat& sources)
 
     /* Back Projection */
 
-    double results[NTEMPS] = {1,1,1,1};  // Initial vector = {1,1,1,1}
+    double results[NTEMPS] = {1,1,1,1,1,1,1,1};
     Rect result_rects[NTEMPS];
 
     //Mat buffer[NTEMPS];
-    bestMatches<NTEMPS>(sources, templates, resultsMatch);
+    bestMatches<NTEMPS>(sources[0], templates, resultsMatch);
     for(int i=0;i<NTEMPS;i++){
-        resultsMatch[i] = combine_binary(sources, resultsMatch[i]);
+        resultsMatch[i] = combine_binary(sources[0], resultsMatch[i]);
         //imshow( "Where is Waldo? Found!"+i, resultsMatch[i]);
     }
     //waitKey(0);
 
     /* Histogram correlation */
-	
-	for(int i=0;i<NTEMPS;i++)
-		matchWaldo<NTEMPS>(resultsMatch[i], templates, results, result_rects, 1);
 
-    cout << " Correlation 1: " <<  results[0] << "\n";  //"(x,y): " << result_rects[0].x << " " << result_rects[0].y <<
-    cout << " Correlation 2: " <<  results[1] << "\n";
-    cout << " Correlation 3: " <<  results[2] << "\n";
-    cout << " Correlation 4: " <<  results[3] << "\n";/*
-    cout << " Correlation 5: " <<  results[4] << "\n";*/
+    for(int i=0; i<NTEMPS;i++)
+        matchWaldo<NTEMPS>(resultsMatch[i], templates, results, result_rects, 1);
 
-    for(int i=0; i<NTEMPS; i++)
-        rectangle(sources, result_rects[i], i*255/NTEMPS, 2);
+    for(int i=0; i<NTEMPS; i++){
+        cout << " Correlation "<< ((i+1)*255/NTEMPS) << ": " <<  results[i] << "\n";
+        rectangle(sources[0], result_rects[i], (i+1)*255/NTEMPS, 2);
+    }
 
-    imshow( "Where is Waldo? Found!", sources);
-    /**/
+    imshow( "Where is Waldo? Found!", sources[0]);
+    waitKey(0);
 
 }
 
