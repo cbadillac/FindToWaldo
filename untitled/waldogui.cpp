@@ -5,7 +5,7 @@
 #include "asmOpenCV.h"
 #include "franjas.h"
 #include "templatematching.h"
-
+#include "temp_histogram.hpp"
 
 
 WaldoGUI::WaldoGUI(FiltrosGUI* winFiltros, QWidget *parent) :
@@ -51,11 +51,17 @@ void WaldoGUI::on_pushButton_clicked()
     Franjas franj;
     Mat franjResult;
     Mat templResult;
+
     franjResult = franj.run(waldoImage);
     emit franjasListas(franjResult);
+
+    /*
     TemplateMatching templ;
     templResult = templ.run(franjResult);
     emit templateMatchListo(templResult);
+    */
+
+    HistogramModule<1>(&franjResult);
 }
 
 void WaldoGUI::on_pushButton_2_clicked()
