@@ -106,17 +106,14 @@ void matchWaldo(Mat& source, Mat templates[N], double results[N], Rect results_r
     int temp_height;
     double actual_comparation;
 
-    //for(int i=0;;i++)
-    //Mat hist_temp[4]= (hist_temp[0] + hist_temp[1] + hist_temp[2] + hist_temp[3])/4;
-
     for(int ntemps=0; ntemps<N; ntemps++){
-        temp_width  = templates[ntemps].cols;
-        temp_height = templates[ntemps].rows;
+        temp_width  = 16;
+        temp_height = 22;
 
         for(int it=1; it<=nscales; it++){
-            for(int wi=0; wi<(hsv_source.cols-temp_width/it); wi++){
-                for(int hi=0; hi<(hsv_source.rows-temp_height/it); hi++){
-                    subArea = hsv_source(Rect(wi,hi,temp_width/it, temp_height/it));
+            for(int wi=0; wi<(hsv_source.cols-temp_width-2*it); wi+=temp_width/3){
+                for(int hi=0; hi<(hsv_source.rows-temp_height-2*it); hi+=temp_height/3){
+                    subArea = hsv_source(Rect(wi,hi,temp_width-2*it, temp_height-2*it));
                     calcHist( &subArea, 1, channels, Mat(), hist_subArea, 2, histSize, ranges, true, false );
                     normalize( hist_subArea, hist_subArea, 0, 255, NORM_MINMAX, -1, Mat() );
 
@@ -124,7 +121,7 @@ void matchWaldo(Mat& source, Mat templates[N], double results[N], Rect results_r
 
                     if(actual_comparation <= results[ntemps]){
                         results[ntemps] = actual_comparation;
-                        results_rect[ntemps] = Rect(wi,hi,temp_width/it, temp_height/it);
+                        results_rect[ntemps] = Rect(wi,hi,temp_width-2*it, temp_height-2*it);
                     }
                 }
             }
@@ -199,16 +196,18 @@ Mat combine_binary(Mat src,Mat bin1){
 
 void HistogramModule(Mat& sources)
 {
-    const int NTEMPS = 4;
+    const int NTEMPS = 7;
 
     Mat templates[NTEMPS];
     Mat resultsMatch[NTEMPS];
 
     templates[0] = imread("../temp_histograms/temp8.jpeg", CV_LOAD_IMAGE_COLOR);
-    templates[1] = imread("../temp_histograms/temp9.jpeg", CV_LOAD_IMAGE_COLOR);
+    templates[1] = imread("../temp_histograms/temp1.jpeg", CV_LOAD_IMAGE_COLOR);
     templates[2] = imread("../temp_histograms/temp2.jpeg", CV_LOAD_IMAGE_COLOR);
-    templates[3] = imread("../temp_histograms/temp5.jpeg", CV_LOAD_IMAGE_COLOR);/*
-    templates[4] = imread("../temp_histograms/temp7.jpeg", CV_LOAD_IMAGE_COLOR);*/
+    templates[3] = imread("../temp_histograms/temp5.jpeg", CV_LOAD_IMAGE_COLOR);
+    templates[4] = imread("../temp_histograms/temp7.jpeg", CV_LOAD_IMAGE_COLOR);
+    templates[5] = imread("../temp_histograms/temp11.jpeg", CV_LOAD_IMAGE_COLOR);
+    templates[6] = imread("../temp_histograms/temp10.jpeg", CV_LOAD_IMAGE_COLOR);
 
     /* Error handling */
 
@@ -241,8 +240,9 @@ void HistogramModule(Mat& sources)
     //waitKey(0);
 
     /* Histogram correlation */
-
-    matchWaldo<NTEMPS>(resultsMatch[0], templates, results, result_rects, 1);
+	
+	for(int i=0;i<NTEMPS;i++)
+		matchWaldo<NTEMPS>(resultsMatch[i], templates, results, result_rects, 1);
 
     cout << " Correlation 1: " <<  results[0] << "\n";  //"(x,y): " << result_rects[0].x << " " << result_rects[0].y <<
     cout << " Correlation 2: " <<  results[1] << "\n";
@@ -273,7 +273,7 @@ int main()
 
 /*
 template< std::size_t N >
-void surfCube(Mat source, Mat templates[N], int nscale=1)
+void surfMatching(Mat source, Mat templates[N], int nscale=1)
 {
     if(nscale<1){
         cout << "No se puede ingresar un valor de escalamiento menor a 1.\n";
